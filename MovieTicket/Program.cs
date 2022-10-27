@@ -1,7 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using MovieTicket.Data;
+using MovieTicket.Data.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IActorsService, ActorsService>();
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
+    builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
@@ -19,6 +26,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+AppDbInitializer.seed(app);
 
 app.MapControllerRoute(
     name: "default",
