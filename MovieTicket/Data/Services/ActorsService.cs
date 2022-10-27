@@ -23,7 +23,21 @@ namespace MovieTicket.Data.Services
              _context.Actors.Remove(results);
             await _context.SaveChangesAsync();
         }
-              
+
+        
+
+        public async Task<IEnumerable<Actor>> GetAllAsync()
+        {
+            var result = await _context.Actors.ToListAsync();
+            return result;
+        }
+
+        public async Task<Actor> GetByIdAsync(int id)
+        {
+            var results = await _context.Actors.FirstOrDefaultAsync(x => x.Id == id);
+            return results;
+        }
+
         public async Task<Actor> UpdateAsync(int id, Actor newActor)
         {
             _context.Update(newActor);
